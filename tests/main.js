@@ -94,7 +94,7 @@ async function runReactiveTest(lookupUserOutsideReactivePublish) {
     }
 }
 
-describe("nachocodoner-reactive-publish-test", function () {
+describe("nachocodoner-reactive-publish-test2", function () {
 
     if (Meteor.isClient) {
 
