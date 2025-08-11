@@ -101,13 +101,13 @@ describe("nachocodoner-reactive-publish-test2", function () {
 
     if (Meteor.isClient) {
 
-        it("reactive sub with modded field", async function () {
+        it("reactive sub with modded field fetch", async function () {
 
             await runReactiveTest(this, true);
 
         });
 
-        it("reactive sub without modded field", async function () {
+        it("reactive sub without modded field fetch", async function () {
 
             await runReactiveTest(this, false);
 
