@@ -62,8 +62,8 @@ async function runReactiveTest(test, fetchBumpsField) {
     await setupTest(test);
 
     const postsSub = Meteor.subscribe('subscribed-posts', fetchBumpsField);
-    const cheesesSub = Meteor.subscribe('cheeses');
     // const winesSub = Meteor.subscribe('wines');
+    const cheesesSub = Meteor.subscribe('cheeses');
 
     try {
 
@@ -91,8 +91,8 @@ async function runReactiveTest(test, fetchBumpsField) {
     } finally {
 
         postsSub.stop();
-        cheesesSub.stop();
         // winesSub.stop();
+        cheesesSub.stop();
 
     }
 }
