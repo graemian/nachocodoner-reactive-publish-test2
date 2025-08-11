@@ -55,7 +55,11 @@ async function setupTest(test) {
     await sleep();
 }
 
-async function runReactiveTest(fetchBumpsField) {
+async function runReactiveTest(test, fetchBumpsField) {
+
+    await sleep();
+
+    await setupTest(test);
 
     const postsSub = Meteor.subscribe('subscribed-posts', fetchBumpsField);
     const cheesesSub = Meteor.subscribe('cheeses');
@@ -99,17 +103,13 @@ describe("nachocodoner-reactive-publish-test2", function () {
 
         it("reactive sub with modded field", async function () {
 
-            await setupTest(this);
-
-            await runReactiveTest(true);
+            await runReactiveTest(this, true);
 
         });
 
         it("reactive sub without modded field", async function () {
 
-            await setupTest(this);
-
-            await runReactiveTest(false);
+            await runReactiveTest(this, false);
 
         });
 
