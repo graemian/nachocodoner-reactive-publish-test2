@@ -1,5 +1,5 @@
 import assert from "assert";
-import {bump, Cheeses, Posts, Users} from "../imports/api/data";
+import {bump, Cheeses, Posts, Users, Wines} from "../imports/api/data";
 
 import {Meteor} from "meteor/meteor";
 
@@ -13,9 +13,13 @@ if (Meteor.isServer) {
             await Posts.removeAsync({});
             await Users.removeAsync({});
             await Cheeses.removeAsync({});
+            await Wines.removeAsync({});
 
             await Cheeses.insertAsync({name: "cheddar"});
             await Cheeses.insertAsync({name: "mozzarella"});
+
+            await Wines.insertAsync({name: "Merlot"});
+            await Wines.insertAsync({name: "Cabernet Sauvignon"});
 
             const postIds = []; 
             
@@ -55,6 +59,7 @@ async function runReactiveTest(fetchBumpsField) {
 
     const postsSub = Meteor.subscribe('subscribed-posts', fetchBumpsField);
     const cheesesSub = Meteor.subscribe('cheeses');
+    // const winesSub = Meteor.subscribe('wines');
 
     try {
 
@@ -83,6 +88,7 @@ async function runReactiveTest(fetchBumpsField) {
 
         postsSub.stop();
         cheesesSub.stop();
+        // winesSub.stop();
 
     }
 }

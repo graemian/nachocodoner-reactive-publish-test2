@@ -1,5 +1,5 @@
 import {Meteor} from 'meteor/meteor';
-import {Cheeses, Posts, Users} from "../imports/api/data";
+import {Cheeses, Posts, Users, Wines} from "../imports/api/data";
 
 Meteor.methods({bump: async function(){
 
@@ -10,6 +10,12 @@ Meteor.methods({bump: async function(){
 Meteor.publish('cheeses', function () {
 
     return Cheeses.find();
+
+});
+
+Meteor.publish('wines', function () {
+
+    return Wines.find();
 
 });
 
