@@ -30,7 +30,6 @@ if (Meteor.isServer) {
 
             await Users.updateAsync({_id: userId}, {$set: {subscribedPosts: postIds}});
 
-
         },
     });
 
@@ -52,13 +51,9 @@ async function setupTest(test) {
     await sleep();
 }
 
-async function getCheeseCount() {
-    return await CheesesCollection.find().countAsync();
-}
+async function runReactiveTest(fetchBumpsField) {
 
-async function runReactiveTest(lookupUserOutsideReactivePublish) {
-
-    const postsSub = Meteor.subscribe('subscribed-posts');
+    const postsSub = Meteor.subscribe('subscribed-posts', fetchBumpsField);
     const cheesesSub = Meteor.subscribe('cheeses');
 
     try {
@@ -74,7 +69,6 @@ async function runReactiveTest(lookupUserOutsideReactivePublish) {
 
         const cheese = await Cheeses.findOneAsync();
         console.log("cheese", cheese);
-
         assert.notEqual(cheese, undefined, "Cheese not found before bump");
 
         await bump();
@@ -83,8 +77,7 @@ async function runReactiveTest(lookupUserOutsideReactivePublish) {
 
         const cheese2 = await Cheeses.findOneAsync();
         console.log("cheese2", cheese2);
-
-        assert.notEqual(cheese, undefined, "Cheese not found after bump");
+        assert.notEqual(cheese2, undefined, "Cheese not found after bump");
 
     } finally {
 
@@ -98,7 +91,7 @@ describe("nachocodoner-reactive-publish-test2", function () {
 
     if (Meteor.isClient) {
 
-        it("reactive sub outside", async function () {
+        it("reactive sub with modded field", async function () {
 
             await setupTest(this);
 
@@ -106,7 +99,7 @@ describe("nachocodoner-reactive-publish-test2", function () {
 
         });
 
-        it("reactive sub inside", async function () {
+        it("reactive sub without modded field", async function () {
 
             await setupTest(this);
 

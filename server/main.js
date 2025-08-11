@@ -1,4 +1,4 @@
-import { Meteor } from 'meteor/meteor';
+import {Meteor} from 'meteor/meteor';
 import {Cheeses, Posts, Users} from "../imports/api/data";
 
 Meteor.methods({bump: async function(){
@@ -7,26 +7,24 @@ Meteor.methods({bump: async function(){
 
     }});
 
-
 Meteor.publish('cheeses', function () {
-
-    if (!this.userId)
-        return [];
 
     return Cheeses.find();
 
 });
 
-Meteor.publish('subscribed-posts', function () {
-
-    if (!this.userId)
-        return [];
+Meteor.publish('subscribed-posts', function (fetchBumpsField) {
 
     this.autorun(async () => {
-        const user = await Users.findOneAsync(this.userId, {
-            fields: { subscribedPosts: 1 },
-        });
+
+        let fields = {subscribedPosts: 1};
+
+        if (fetchBumpsField)
+            fields.bumps = 1;
+
+        const user = await Users.findOneAsync(this.userId, { fields });
 
         return Posts.find({ _id: { $in: user?.subscribedPosts || [] } });
+
     });
 });
