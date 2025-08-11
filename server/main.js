@@ -33,4 +33,5 @@ Meteor.publish('subscribed-posts', function (fetchBumpsField) {
         return Posts.find({ _id: { $in: user?.subscribedPosts || [] } });
 
     });
+
 });
