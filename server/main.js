@@ -9,13 +9,13 @@ Meteor.methods({bump: async function(){
 
 Meteor.publish('cheeses', function () {
 
-    return Cheeses.find();
+    return Cheeses.find({});
 
 });
 
 Meteor.publish('wines', function () {
 
-    return Wines.find();
+    return Wines.find({});
 
 });
 
