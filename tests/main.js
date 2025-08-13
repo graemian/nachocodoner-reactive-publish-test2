@@ -55,13 +55,13 @@ async function setupTest(test) {
     await sleep();
 }
 
-async function runReactiveTest(test, fetchBumpsField) {
+async function runReactiveTest(test, fetchUserBumpsField) {
 
     await sleep();
 
     await setupTest(test);
 
-    const postsSub = Meteor.subscribe('subscribed-posts', fetchBumpsField);
+    const postsSub = Meteor.subscribe('subscribed-posts', {fetchUserBumpsField});
     // const winesSub = Meteor.subscribe('wines');
     const cheesesSub = Meteor.subscribe('cheeses');
 
