@@ -97,6 +97,53 @@ async function runReactiveTest(test, fetchUserBumpsField) {
     }
 }
 
+async function runReactiveFieldPubTest(test, onlyPublishNameField) {
+
+    await sleep();
+
+    await setupTest(test);
+
+    const postsSub = Meteor.subscribe('subscribed-posts', {onlyPublishNameField});
+    // const winesSub = Meteor.subscribe('wines');
+    const cheesesSub = Meteor.subscribe('cheeses');
+
+    try {
+
+        await sleep();
+
+        await Meteor.loginWithPassword("bob", "123");
+        await sleep();
+
+        assert.notEqual(Meteor.userId(), null, "Not logged in");
+
+        await sleep();
+
+        const cheese = await Cheeses.findOneAsync();
+        console.log("cheese", cheese);
+        assert.notEqual(cheese, undefined, "Cheese not found before bump");
+
+        await Posts.insertAsync({name: "new"});
+
+        const post = await Posts.findOneAsync({name: "post1"});
+
+        await Posts.updateAsync({_id: post._id}, {$set: {bumped: true}});
+
+        await sleep();
+        await sleep();
+
+        const cheese2 = await Cheeses.findOneAsync();
+        console.log("cheese2", cheese2);
+        assert.notEqual(cheese2, undefined, "Cheese not found after bump");
+
+    } finally {
+
+        postsSub.stop();
+        // winesSub.stop();
+        cheesesSub.stop();
+
+    }
+}
+
 describe("nachocodoner-reactive-publish-test2", function () {
 
     if (Meteor.isClient) {
@@ -110,6 +157,22 @@ describe("nachocodoner-reactive-publish-test2", function () {
         it("reactive sub without modded field fetch", async function () {
 
             await runReactiveTest(this, false);
+
+        });
+
+        it("update reactive pub with field", async function () {
+
+            let test = this;
+
+            await runReactiveFieldPubTest(test, false);
+
+        });
+
+        it("update reactive pub without field", async function () {
+
+            let test = this;
+
+            await runReactiveFieldPubTest(test, true);
 
         });
 
