@@ -19,18 +19,23 @@ Meteor.publish('wines', function () {
 
 });
 
-Meteor.publish('subscribed-posts', function (fetchBumpsField) {
+Meteor.publish('subscribed-posts', function ({fetchUserBumpsField, onlyPublishNameField}) {
 
     this.autorun(async () => {
 
-        let fields = {subscribedPosts: 1};
+        const userFields = {subscribedPosts: 1};
 
-        if (fetchBumpsField)
-            fields.bumps = 1;
+        if (fetchUserBumpsField)
+            userFields.bumps = 1;
 
-        const user = await Users.findOneAsync(this.userId, { fields });
+        const user = await Users.findOneAsync(this.userId, { fields: userFields });
 
-        return Posts.find({ _id: { $in: user?.subscribedPosts || [] } });
+        const postOptions = {};
+
+        if (onlyPublishNameField)
+            postOptions.fields = {name: 1};
+
+        return Posts.find({ _id: { $in: user?.subscribedPosts || [] } }, postOptions);
 
     });
 
