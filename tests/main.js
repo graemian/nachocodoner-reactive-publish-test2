@@ -126,7 +126,7 @@ async function runReactiveFieldPubTest(test, onlyPublishNameField) {
 
         const post = await Posts.findOneAsync({name: "post1"});
 
-        await Posts.updateAsync({_id: post._id}, {$set: {bumped: true}});
+        await Posts.updateAsync({_id: post._id}, {$set: {updatedAt: new Date()}});
 
         await sleep();
         await sleep();
